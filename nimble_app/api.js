@@ -20,7 +20,32 @@ export async function getJobs() {
         const response = await fetch(
             `${BASE_URL}/api/jobs/get-list`);
         if (!response.ok) {
-            throw new Error(`Error en la petición de jobs list`);
+            throw new Error(`Error en la petición de vacantes`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error en el fetch:", error);
+        throw error;
+    }
+}
+export async function applyJobs({uuid, jobId, candidateId, repoURL}) {
+    try {
+         const response = await fetch(
+        `${BASE_URL}/api/candidate/apply-to-job`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                uuid,
+                jobId,
+                candidateId,
+                repoURL,
+            }),
+        });
+        if (!response.ok) {
+            throw new Error(`Error en la aplicación a la vacante`);
         }
         const data = await response.json();
         return data;
