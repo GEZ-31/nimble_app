@@ -13,6 +13,8 @@ const JobList = () => {
     lastName: "",
     email: "",
   });
+  const [loadingCandidato, setLoadingCandidato] = useState(true);
+  const [errorCandidato, setErrorCandidato] = useState(null);
   useEffect(() => {
     getJobs()
       .then((data) => {
@@ -23,7 +25,7 @@ const JobList = () => {
   }, []);
   useEffect(() => {
     getData()
-      .then((data) =>
+      .then((data) => {
         setCandidato({
           uuid: data.uuid,
           candidateId: data.candidateId,
@@ -31,18 +33,29 @@ const JobList = () => {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
-        }),
-      )
-      .catch((error) => console.error("Error al obtener mis datos:", error));
+        });
+        setLoadingCandidato(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener mis datos:", error);
+        setErrorCandidato("No se pudo cargar tus datos");
+        setLoadingCandidato(false);
+      });
   }, []);
   return (
     <Container fluid className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
       <h2 className="mb-4 text-center">Vacantes Disponibles</h2>
+      {loadingCandidato && (
+        <div className="alert alert-info">Cargando tus datos...</div>
+      )}
+      {errorCandidato && (
+        <div className="alert alert-danger">{errorCandidato}</div>
+      )}
       <Row className="w-100 justify-content-center">
         {jobs.length > 0 ? (
           jobs.map((job) => (
             <Col key={job.id} xs={12} md={6} lg={4} className="mb-4">
-              <JobCard job={job} candidato={candidato} />
+              <JobCard job={job} candidato={candidato} loadingCandidato={loadingCandidato} />
             </Col>
           ))
         ) : (

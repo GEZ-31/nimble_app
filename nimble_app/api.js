@@ -31,7 +31,7 @@ export async function getJobs() {
 }
 export async function applyJobs({uuid, jobId, candidateId, repoURL}) {
     try {
-         const response = await fetch(
+        const response = await fetch(
         `${BASE_URL}/api/candidate/apply-to-job`, {
             method: "POST",
             headers: {

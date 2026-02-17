@@ -2,15 +2,15 @@ import { useState } from "react";
 import { applyJobs } from "../../api";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 
-const JobCard = ({ job, candidato }) => {
+const JobCard = ({ job, candidato, loadingCandidato }) => {
   const [repoURL, setRepoURL] = useState("");
   const [estado, setEstado] = useState(null);
   const [variante, setVariante] = useState("success");
   const [loading, setLoading] = useState(false);
 
   const handleApplyJob = async () => {
-    if (!candidato) {
-      setEstado("Error: No se pudo obtener la información del candidato.");
+    if (!candidato.uuid || !candidato.candidateId) {
+      setEstado("Error: Los datos del candidato no están disponibles.");
       setVariante("danger");
       return;
     }
@@ -28,7 +28,7 @@ const JobCard = ({ job, candidato }) => {
         repoURL: repoURL,
       });
       console.log("Respuesta de la aplicación:", response);
-      setEstado("Aplicación enviada con éxito");
+      setEstado("Aplicación exitosa");
       setVariante("success");
       setRepoURL("");
     } catch (error) {
@@ -52,7 +52,7 @@ const JobCard = ({ job, candidato }) => {
             onChange={(e) => setRepoURL(e.target.value)}
           />
         </Form.Group>
-        <Button variant="primary" onClick={handleApplyJob} disabled={loading}>
+        <Button variant="primary" onClick={handleApplyJob} disabled={loading || loadingCandidato || !candidato.uuid}>
           {loading ? "Aplicando..." : "Aplicar a la vacante"}
         </Button>
         {estado && (
