@@ -29,23 +29,27 @@ export async function getJobs() {
         throw error;
     }
 }
-export async function applyJobs({uuid, jobId, candidateId, repoURL}) {
+export async function applyJobs({uuid, jobId, candidateId, applicationId, repoUrl}) {
     try {
+        const payload = {
+            uuid,
+            jobId,
+            candidateId,
+            applicationId,
+            repoUrl,
+        };
         const response = await fetch(
         `${BASE_URL}/api/candidate/apply-to-job`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                uuid,
-                jobId,
-                candidateId,
-                repoURL,
-            }),
+            body: JSON.stringify(payload),
         });
         if (!response.ok) {
-            throw new Error(`Error en la aplicación a la vacante`);
+            const errorData = await response.text();
+            console.error(`Respuesta del servidor (${response.status}):`, errorData);
+            throw new Error(`Error en la aplicación a la vacante: ${response.status}`);
         }
         const data = await response.json();
         return data;

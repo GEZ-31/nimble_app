@@ -19,7 +19,6 @@ const JobList = () => {
     getJobs()
       .then((data) => {
         setJobs(data);
-        console.log("Jobs:", data);
       })
       .catch((err) => console.error(err));
   }, []);

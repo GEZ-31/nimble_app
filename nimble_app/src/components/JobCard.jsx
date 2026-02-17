@@ -24,8 +24,9 @@ const JobCard = ({ job, candidato, loadingCandidato }) => {
       const response = await applyJobs({
         uuid: candidato.uuid,
         candidateId: candidato.candidateId,
+        applicationId: candidato.applicationId,
         jobId: job.id,
-        repoURL: repoURL,
+        repoUrl: repoURL,
       });
       console.log("Respuesta de la aplicación:", response);
       setEstado("Aplicación exitosa");
