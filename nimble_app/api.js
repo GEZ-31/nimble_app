@@ -6,7 +6,21 @@ export async function getData() {
         const response = await fetch(
             `${BASE_URL}/api/candidate/get-by-email?email=${email}`);
         if (!response.ok) {
-            throw new Error(`Error en la petición`);
+            throw new Error(`Error en la petición de datos`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error en el fetch:", error);
+        throw error;
+    }
+}
+export async function getJobs() {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/api/jobs/get-list`);
+        if (!response.ok) {
+            throw new Error(`Error en la petición de jobs list`);
         }
         const data = await response.json();
         return data;
