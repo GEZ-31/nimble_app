@@ -25,6 +25,8 @@ La app está configurada para que sólo se pueda aplicar enviando los datos obte
    ```bash
    git clone <url-del-repo>
 2. Instalar dependencias
+    ```bash
     npm install
 3. Levantar el proyecto
+    ```bash
     npm run dev
